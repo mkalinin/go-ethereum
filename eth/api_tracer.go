@@ -745,7 +745,7 @@ func (api *PrivateDebugAPI) traceTx(ctx context.Context, message core.Message, v
 		deadlineCtx, cancel := context.WithTimeout(ctx, timeout)
 		go func() {
 			<-deadlineCtx.Done()
-			tracer.(*tracers.Tracer).Stop(errors.New("execution timeout"))
+			tracer.(*tracers.JSTracer).Stop(errors.New("execution timeout"))
 		}()
 		defer cancel()
 
@@ -772,7 +772,7 @@ func (api *PrivateDebugAPI) traceTx(ctx context.Context, message core.Message, v
 			StructLogs:  ethapi.FormatLogs(tracer.StructLogs()),
 		}, nil
 
-	case *tracers.Tracer:
+	case tracers.Tracer:
 		return tracer.GetResult()
 
 	default:
